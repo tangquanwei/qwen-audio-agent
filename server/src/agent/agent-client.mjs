@@ -1,7 +1,10 @@
 import { config } from '../core/config.mjs'
 import { AgentError } from './backend-adapter.mjs'
 import { AcpBackendAdapter } from './acp-backend-adapter.mjs'
-import { backendDriver } from './backends/registry.mjs'
+import {
+  backendDriver,
+  createBackendProfile,
+} from './backends/registry.mjs'
 
 export { AgentError }
 
@@ -33,7 +36,7 @@ export class AgentClient {
       model: model ?? backend.model,
       coordinatorAgent: coordinatorAgent ?? backend.coordinatorAgent,
     }
-    const profile = driver.createProfile({
+    const profile = createBackendProfile(protocol, {
       protocol,
       root: config.root,
       ownership,
@@ -75,6 +78,10 @@ export class AgentClient {
     } catch (error) {
       return { ok: false, error: error.message, protocol: this.protocol }
     }
+  }
+
+  status() {
+    return this.adapter.status()
   }
 
   runCoordinator(message, options = {}) {
@@ -171,8 +178,16 @@ export const agent = {
     : Promise.resolve({
         enabled: false,
         ok: true,
+      status: 'not_configured',
+    }),
+  status: () => config.agentProtocol
+    ? requireAgent().status()
+    : {
+        enabled: false,
+        ok: true,
         status: 'not_configured',
-      }),
+        code: 'NOT_CONFIGURED',
+      },
   runCoordinator: (message, options = {}) =>
     requireAgent().runCoordinator(message, options),
   respondPermission: (id, decision, options = {}) =>

@@ -17,7 +17,7 @@
   --warning: #f59f11;
   --danger: #ee4646;
   --info: #3d82f5;
-  --label-width: 104px;
+  --label-width: 88px;
 }
 
 * {
@@ -252,6 +252,10 @@ h2 {
 
 .connection-status.connected::before {
   background: var(--success);
+}
+
+.connection-status.checking::before {
+  background: var(--warning);
 }
 
 .connection-status.disconnected::before {
@@ -828,7 +832,7 @@ select {
 }
 
 .backend-install,
-.backend-authenticate {
+.backend-configure {
   min-height: 32px;
   padding: 4px 12px;
   border: 1px solid var(--divider);
@@ -850,7 +854,7 @@ select {
 }
 
 .backend-install:hover:not(:disabled),
-.backend-authenticate:hover:not(:disabled) {
+.backend-configure:hover:not(:disabled) {
   border-color: var(--text-primary);
 }
 
