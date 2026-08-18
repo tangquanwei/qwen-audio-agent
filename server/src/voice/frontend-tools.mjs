@@ -7,7 +7,6 @@ import { MEMORY_DOCUMENTS } from '../core/memory-scopes.mjs'
 
 export const SPAWN_THINKING_TOOL_NAME = 'spawn_thinking'
 export const SCHEDULE_REMINDER_TOOL_NAME = 'schedule_reminder'
-export const DELEGATE_TOOL_NAME = SPAWN_THINKING_TOOL_NAME
 export const CANCEL_AGENT_TASK_TOOL_NAME = 'cancel_agent_task'
 export const GET_AGENT_TASK_STATUS_TOOL_NAME = 'get_agent_task_status'
 export const GET_CURRENT_TIME_TOOL_NAME = 'get_current_time'
@@ -16,10 +15,10 @@ export const NOTES_TOOL_NAME = 'notes'
 export const RESPOND_AGENT_PERMISSION_TOOL_NAME = 'respond_agent_permission'
 export const ENTER_SLEEP_TOOL_NAME = 'enter_sleep'
 
-const delegateTool = {
+const spawnThinkingTool = {
   type: 'function',
   function: {
-    name: DELEGATE_TOOL_NAME,
+    name: SPAWN_THINKING_TOOL_NAME,
     description: '执行需要当前信息、搜索、检查、工具、文件、屏幕、应用、代码、图片生成、创作，或继续、修改已有工作的请求。这是你向用户提供的执行能力；请求明确时直接调用，不要先否认能力或说需要转交。询问此前工作的状态、进度或阶段结果时改用 get_agent_task_status。返回 accepted 只表示已受理，不表示已完成。',
     parameters: {
       type: 'object',
@@ -27,6 +26,12 @@ const delegateTool = {
         objective: {
           type: 'string',
           description: '可直接执行的目标，忠实保留用户要求的结果、约束、执行方式，以及本项工作与既有工作的关系。可以根据当前对话消解明确指代，但不得遗漏、推断或改变这些语义，也不要提交占位目标；近期对话会随工作一并提供。',
+        },
+        input_refs: {
+          type: 'array',
+          items: { type: 'string' },
+          maxItems: 8,
+          description: '仅当任务依赖此前轮次标注为“可引用输入”的图片或文件时填写对应 input_N；本轮提交的输入会自动携带。没有相关输入时省略，不得猜造引用。',
         },
       },
       required: ['objective'],
@@ -221,7 +226,7 @@ const scheduleReminderTool = {
 }
 
 export const TOOLS = [
-  delegateTool,
+  spawnThinkingTool,
   scheduleReminderTool,
   cancelAgentTaskTool,
   getAgentTaskStatusTool,

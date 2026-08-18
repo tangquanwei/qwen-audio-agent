@@ -65,7 +65,7 @@
 
 对话不会因为后台任务而停下；任务完成后，结果会自然回到当前对话：
 
-https://github.com/user-attachments/assets/42022655-36d1-46b2-9c26-ff0765284000
+https://github.com/user-attachments/assets/ab570531-8da9-4af4-93fa-244bb6614c05
 
 ### 核心特色
 
@@ -91,7 +91,8 @@ https://github.com/user-attachments/assets/42022655-36d1-46b2-9c26-ff0765284000
 
 ![qwen-audio-agent 接入参考架构](docs/qwen-audio-agent-three-layer-architecture.png)
 
-更完整的设计与模块说明见[架构文档](docs/architecture.zh.md)。
+更完整的产品边界见[架构文档](docs/architecture.zh.md)，也可查看
+[语音 Agent 架构演示文档](docs/voice-agent-architecture-presentation.zh.md)。
 
 </details>
 
